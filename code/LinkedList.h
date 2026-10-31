@@ -1,4 +1,6 @@
 #include <iostream>
+#include <utility>
+#include <algorithm>
 
 using namespace std;
 
@@ -231,6 +233,22 @@ public:
         }
 
         return end();
+    }
+
+    // ------------------------------------------------------------
+    //  THUAT TOAN SAP XEP: INTERCHANGE SORT (DOI CHO TRUC TIEP)
+    // ------------------------------------------------------------
+    template <typename Compare>
+    void sort(Compare cmp) {
+        if (head == nullptr || head->next == nullptr) return;
+
+        for (Node<T>* i = head; i->next != nullptr; i = i->next) {
+            for (Node<T>* j = i->next; j != nullptr; j = j->next) {
+                if (cmp(j->data, i->data)) {
+                    std::swap(i->data, j->data);
+                }
+            }
+        }
     }
 
     // ------------------------------------------------------------

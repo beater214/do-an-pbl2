@@ -375,6 +375,166 @@ void traPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThue
 }
 
 // ================================================================
+//  CAC MENU CON SAP XEP (THUAT TOAN INTERCHANGE SORT)
+// ================================================================
+
+void menuSapXepPhong(QuanLyPhong& qlPhong, const QuanLyHopDong& qlHopDong, const QuanLyNguoiThue& qlNguoiThue, const QuanLyHoaDon& qlHoaDon) {
+    int lc = -1;
+    while (lc != 0) {
+        cout << "\n+-------------------------------------------------------------+\n";
+        cout << "|                 SAP XEP DANH SACH PHONG TRO                 |\n";
+        cout << "|                (Thuat toan: Interchange Sort)               |\n";
+        cout << "+-------------------------------------------------------------+\n";
+        cout << "|  [1] Theo dien tich phong tang dan (Be -> Lon)              |\n";
+        cout << "|  [2] Theo dien tich phong giam dan (Lon -> Be)              |\n";
+        cout << "|  [3] Theo gia thue phong tang dan (Be -> Lon)               |\n";
+        cout << "|  [4] Theo gia thue phong giam dan (Lon -> Be)               |\n";
+        cout << "|  [0] Quay lai menu Quan ly phong tro                        |\n";
+        cout << "+-------------------------------------------------------------+\n";
+        cout << ">> Nhap lua chon cua ban [0-4]: ";
+        if (!(cin >> lc)) { xoaBoDem(); continue; }
+
+        if (lc == 1) {
+            qlPhong.sapXepTheoDienTich(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep danh sach phong theo DIEN TICH TANG DAN (Be -> Lon)!");
+            hienThiBangPhongTro(qlPhong.layDanhSachPhong(), qlHopDong, qlNguoiThue);
+        } else if (lc == 2) {
+            qlPhong.sapXepTheoDienTich(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep danh sach phong theo DIEN TICH GIAM DAN (Lon -> Be)!");
+            hienThiBangPhongTro(qlPhong.layDanhSachPhong(), qlHopDong, qlNguoiThue);
+        } else if (lc == 3) {
+            qlPhong.sapXepTheoGiaThue(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep danh sach phong theo GIA THUE TANG DAN (Be -> Lon)!");
+            hienThiBangPhongTro(qlPhong.layDanhSachPhong(), qlHopDong, qlNguoiThue);
+        } else if (lc == 4) {
+            qlPhong.sapXepTheoGiaThue(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep danh sach phong theo GIA THUE GIAM DAN (Lon -> Be)!");
+            hienThiBangPhongTro(qlPhong.layDanhSachPhong(), qlHopDong, qlNguoiThue);
+        }
+    }
+}
+
+void menuSapXepHopDong(QuanLyHopDong& qlHopDong, const QuanLyPhong& qlPhong, const QuanLyNguoiThue& qlNguoiThue, const QuanLyHoaDon& qlHoaDon) {
+    int lc = -1;
+    while (lc != 0) {
+        cout << "\n+-------------------------------------------------------------+\n";
+        cout << "|                 SAP XEP HOP DONG THUE PHONG                 |\n";
+        cout << "|                (Thuat toan: Interchange Sort)               |\n";
+        cout << "+-------------------------------------------------------------+\n";
+        cout << "|  [1] Theo thoi gian lap hop dong: Cu -> Moi (Tang dan)      |\n";
+        cout << "|  [2] Theo thoi gian lap hop dong: Moi -> Cu (Giam dan)      |\n";
+        cout << "|  [3] Theo gia thue tren hop dong: Be -> Lon (Tang dan)      |\n";
+        cout << "|  [4] Theo gia thue tren hop dong: Lon -> Be (Giam dan)      |\n";
+        cout << "|  [0] Quay lai menu Quan ly hop dong                         |\n";
+        cout << "+-------------------------------------------------------------+\n";
+        cout << ">> Nhap lua chon cua ban [0-4]: ";
+        if (!(cin >> lc)) { xoaBoDem(); continue; }
+
+        if (lc == 1) {
+            qlHopDong.sapXepTheoNgayLap(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hop dong theo THOI GIAN LAP CU -> MOI!");
+            hienThiBangHopDong(qlHopDong.layDanhSachHopDong(), qlNguoiThue);
+        } else if (lc == 2) {
+            qlHopDong.sapXepTheoNgayLap(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hop dong theo THOI GIAN LAP MOI -> CU!");
+            hienThiBangHopDong(qlHopDong.layDanhSachHopDong(), qlNguoiThue);
+        } else if (lc == 3) {
+            qlHopDong.sapXepTheoGiaThue(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hop dong theo GIA THUE TANG DAN (Be -> Lon)!");
+            hienThiBangHopDong(qlHopDong.layDanhSachHopDong(), qlNguoiThue);
+        } else if (lc == 4) {
+            qlHopDong.sapXepTheoGiaThue(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hop dong theo GIA THUE GIAM DAN (Lon -> Be)!");
+            hienThiBangHopDong(qlHopDong.layDanhSachHopDong(), qlNguoiThue);
+        }
+    }
+}
+
+void menuSapXepHoaDon(QuanLyHoaDon& qlHoaDon, const QuanLyPhong& qlPhong, const QuanLyNguoiThue& qlNguoiThue, const QuanLyHopDong& qlHopDong) {
+    int lc = -1;
+    while (lc != 0) {
+        cout << "\n+-------------------------------------------------------------------------+\n";
+        cout << "|                        SAP XEP HOA DON THANH TOAN                       |\n";
+        cout << "|                      (Thuat toan: Interchange Sort)                     |\n";
+        cout << "+-------------------------------------------------------------------------+\n";
+        cout << "|  [1]  Theo thoi gian lap hoa don: Cu -> Moi (Tang dan)                  |\n";
+        cout << "|  [2]  Theo thoi gian lap hoa don: Moi -> Cu (Giam dan)                  |\n";
+        cout << "|  [3]  Theo tien phong / tien tra hoa don: Be -> Lon (Tang dan)          |\n";
+        cout << "|  [4]  Theo tien phong / tien tra hoa don: Lon -> Be (Giam dan)          |\n";
+        cout << "|  [5]  Theo tien dien: Be -> Lon (Tang dan)                              |\n";
+        cout << "|  [6]  Theo tien dien: Lon -> Be (Giam dan)                              |\n";
+        cout << "|  [7]  Theo tien nuoc: Be -> Lon (Tang dan)                              |\n";
+        cout << "|  [8]  Theo tien nuoc: Lon -> Be (Giam dan)                              |\n";
+        cout << "|  [9]  Theo tong tien hoa don: Be -> Lon (Tang dan)                      |\n";
+        cout << "|  [10] Theo tong tien hoa don: Lon -> Be (Giam dan)                      |\n";
+        cout << "|  [0]  Quay lai menu Quan ly hoa don                                     |\n";
+        cout << "+-------------------------------------------------------------------------+\n";
+        cout << ">> Nhap lua chon cua ban [0-10]: ";
+        if (!(cin >> lc)) { xoaBoDem(); continue; }
+
+        if (lc == 1) {
+            qlHoaDon.sapXepTheoNgayLap(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo THOI GIAN LAP CU -> MOI!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 2) {
+            qlHoaDon.sapXepTheoNgayLap(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo THOI GIAN LAP MOI -> CU!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 3) {
+            qlHoaDon.sapXepTheoTienPhong(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo TIEN PHONG TANG DAN (Be -> Lon)!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 4) {
+            qlHoaDon.sapXepTheoTienPhong(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo TIEN PHONG GIAM DAN (Lon -> Be)!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 5) {
+            qlHoaDon.sapXepTheoTienDien(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo TIEN DIEN TANG DAN (Be -> Lon)!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 6) {
+            qlHoaDon.sapXepTheoTienDien(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo TIEN DIEN GIAM DAN (Lon -> Be)!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 7) {
+            qlHoaDon.sapXepTheoTienNuoc(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo TIEN NUOC TANG DAN (Be -> Lon)!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 8) {
+            qlHoaDon.sapXepTheoTienNuoc(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo TIEN NUOC GIAM DAN (Lon -> Be)!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 9) {
+            qlHoaDon.sapXepTheoTongTien(true);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo TONG TIEN TANG DAN (Be -> Lon)!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        } else if (lc == 10) {
+            qlHoaDon.sapXepTheoTongTien(false);
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da sap xep hoa don theo TONG TIEN GIAM DAN (Lon -> Be)!");
+            hienThiBangHoaDon(qlHoaDon.layDanhSachHoaDon(), qlHoaDon.tinhTongDoanhThu(), qlNguoiThue);
+        }
+    }
+}
+
+// ================================================================
 //  MENU FUNCTIONS
 // ================================================================
 void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThue& qlNguoiThue, QuanLyHoaDon& qlHoaDon) {
@@ -396,10 +556,11 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
         cout << "|  [11] Xem so theo doi thanh toan tung thang cua mot phong   |\n";
         cout << "|  [12] Thue phong tro (Tu dong tao Hop dong & Hoa don)       |\n";
         cout << "|  [13] Tra phong tro (Thanh ly hop dong)                     |\n";
-        cout << "|  [14] Xoa man hinh console (Clear)                          |\n";
+        cout << "|  [14] Sap xep danh sach phong tro (Dien tich, Gia thue)     |\n";
+        cout << "|  [15] Xoa man hinh console (Clear)                          |\n";
         cout << "|  [0]  Quay lai menu chinh                                   |\n";
         cout << "+-------------------------------------------------------------+\n";
-        cout << ">> Nhap lua chon cua ban [0-14]: ";
+        cout << ">> Nhap lua chon cua ban [0-15]: ";
         if (!(cin >> luaChon)) { xoaBoDem(); continue; }
 
         if (luaChon == 1) {
@@ -535,6 +696,8 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
         } else if (luaChon == 13) {
             traPhongTro(qlPhong, qlHopDong, qlNguoiThue, qlHoaDon);
         } else if (luaChon == 14) {
+            menuSapXepPhong(qlPhong, qlHopDong, qlNguoiThue, qlHoaDon);
+        } else if (luaChon == 15) {
             xoaManHinh();
         }
     }
@@ -687,10 +850,11 @@ void menuHopDong(QuanLyHopDong& qlHopDong, QuanLyPhong& qlPhong, QuanLyNguoiThue
         cout << "|  [3] Cap nhat thoi han va gia thue                          |\n";
         cout << "|  [4] Tim kiem hop dong theo ma                              |\n";
         cout << "|  [5] Hien thi danh sach hop dong (Kem ten nguoi thue & phong|\n";
-        cout << "|  [6] Xoa man hinh console (Clear)                           |\n";
+        cout << "|  [6] Sap xep hop dong thue (Thoi gian lap, Gia thue)        |\n";
+        cout << "|  [7] Xoa man hinh console (Clear)                           |\n";
         cout << "|  [0] Quay lai menu chinh                                    |\n";
         cout << "+-------------------------------------------------------------+\n";
-        cout << ">> Nhap lua chon cua ban [0-6]: ";
+        cout << ">> Nhap lua chon cua ban [0-7]: ";
         if (!(cin >> luaChon)) { xoaBoDem(); continue; }
 
         if (luaChon == 1) {
@@ -733,6 +897,8 @@ void menuHopDong(QuanLyHopDong& qlHopDong, QuanLyPhong& qlPhong, QuanLyNguoiThue
         } else if (luaChon == 5) {
             hienThiBangHopDong(qlHopDong.layDanhSachHopDong(), qlNguoiThue);
         } else if (luaChon == 6) {
+            menuSapXepHopDong(qlHopDong, qlPhong, qlNguoiThue, qlHoaDon);
+        } else if (luaChon == 7) {
             xoaManHinh();
         }
     }
@@ -753,10 +919,11 @@ void menuHoaDon(QuanLyHoaDon& qlHoaDon, const QuanLyPhong& qlPhong, const QuanLy
         cout << "|  [7]  Tong hop tinh trang dong tien tat ca cac phong trong thang        |\n";
         cout << "|  [8]  In danh sach phong co tien dien cao hon x dong                    |\n";
         cout << "|  [9]  Thong ke tong doanh thu tien phong, dien, nuoc thang              |\n";
-        cout << "|  [10] Xoa man hinh console (Clear)                                      |\n";
+        cout << "|  [10] Sap xep hoa don (Ngay lap, Tien phong, Dien, Nuoc, Tong tien)     |\n";
+        cout << "|  [11] Xoa man hinh console (Clear)                                      |\n";
         cout << "|  [0]  Quay lai menu chinh                                               |\n";
         cout << "+-------------------------------------------------------------------------+\n";
-        cout << ">> Nhap lua chon cua ban [0-10]: ";
+        cout << ">> Nhap lua chon cua ban [0-11]: ";
         if (!(cin >> luaChon)) { xoaBoDem(); continue; }
 
         if (luaChon == 1) {
@@ -1072,6 +1239,8 @@ void menuHoaDon(QuanLyHoaDon& qlHoaDon, const QuanLyPhong& qlPhong, const QuanLy
             hienThiBangHoaDon(dsThang, tongCong, qlNguoiThue);
             hienThiThongKeDoanhThuThang(thang, nam, tongPhong, tongDien, tongNuoc, tongCong);
         } else if (luaChon == 10) {
+            menuSapXepHoaDon(qlHoaDon, qlPhong, qlNguoiThue, qlHopDong);
+        } else if (luaChon == 11) {
             xoaManHinh();
         }
     }

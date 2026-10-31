@@ -136,6 +136,74 @@ public:
         return HoaDon();
     }
 
+    // ------------------------------------------------------------
+    //  CAC PHUONG THUC SAP XEP (THUAT TOAN INTERCHANGE SORT)
+    // ------------------------------------------------------------
+    template <typename Compare>
+    void sapXep(Compare cmp) {
+        danhSachHoaDon.sort(cmp);
+    }
+
+    void sapXepTheoNgayLap(bool tangDan = true) {
+        if (tangDan) {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getNgayLap() < b.getNgayLap();
+            });
+        } else {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return b.getNgayLap() < a.getNgayLap();
+            });
+        }
+    }
+
+    void sapXepTheoTienPhong(bool tangDan = true) {
+        if (tangDan) {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getTienPhong() < b.getTienPhong();
+            });
+        } else {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getTienPhong() > b.getTienPhong();
+            });
+        }
+    }
+
+    void sapXepTheoTienDien(bool tangDan = true) {
+        if (tangDan) {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getTienDien() < b.getTienDien();
+            });
+        } else {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getTienDien() > b.getTienDien();
+            });
+        }
+    }
+
+    void sapXepTheoTienNuoc(bool tangDan = true) {
+        if (tangDan) {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getTienNuoc() < b.getTienNuoc();
+            });
+        } else {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getTienNuoc() > b.getTienNuoc();
+            });
+        }
+    }
+
+    void sapXepTheoTongTien(bool tangDan = true) {
+        if (tangDan) {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getTongTien() < b.getTongTien();
+            });
+        } else {
+            danhSachHoaDon.sort([](const HoaDon& a, const HoaDon& b) {
+                return a.getTongTien() > b.getTongTien();
+            });
+        }
+    }
+
     bool docFile(const string& filePath) {
         ifstream fin(filePath);
         if (!fin.is_open()) return false;

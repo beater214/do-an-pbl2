@@ -97,6 +97,38 @@ public:
         return ds;
     }
 
+    // ------------------------------------------------------------
+    //  CAC PHUONG THUC SAP XEP (THUAT TOAN INTERCHANGE SORT)
+    // ------------------------------------------------------------
+    template <typename Compare>
+    void sapXep(Compare cmp) {
+        danhSachPhong.sort(cmp);
+    }
+
+    void sapXepTheoDienTich(bool tangDan = true) {
+        if (tangDan) {
+            danhSachPhong.sort([](const PhongTro* a, const PhongTro* b) {
+                return a->getDienTich() < b->getDienTich();
+            });
+        } else {
+            danhSachPhong.sort([](const PhongTro* a, const PhongTro* b) {
+                return a->getDienTich() > b->getDienTich();
+            });
+        }
+    }
+
+    void sapXepTheoGiaThue(bool tangDan = true) {
+        if (tangDan) {
+            danhSachPhong.sort([](const PhongTro* a, const PhongTro* b) {
+                return a->tinhGiaThue() < b->tinhGiaThue();
+            });
+        } else {
+            danhSachPhong.sort([](const PhongTro* a, const PhongTro* b) {
+                return a->tinhGiaThue() > b->tinhGiaThue();
+            });
+        }
+    }
+
     bool docFile(const string& filePath) {
         ifstream fin(filePath);
         if (!fin.is_open()) return false;
