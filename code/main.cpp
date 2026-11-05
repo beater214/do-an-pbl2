@@ -61,15 +61,13 @@ int main() {
         cout << "|   [2]  Quan ly danh sach nguoi thue                         |\n";
         cout << "|   [3]  Quan ly hop dong thue (Lien ket phong & nguoi thue)  |\n";
         cout << "|   [4]  Quan ly hoa don thanh toan (Ky thanh toan & cong no) |\n";
-        cout << "|   [5]  Nghiep vu thue phong (Tu dong lap Hop dong & BL)     |\n";
-        cout << "|   [6]  Nghiep vu tra phong (Thanh ly hop dong & phong)      |\n";
-        cout << "|   [7]  Luu toan bo du lieu ra file txt (Thu cong)           |\n";
-        cout << "|   [8]  Nap lai du lieu tu file txt                          |\n";
-        cout << "|   [9]  Xoa man hinh console (Clear)                         |\n";
+        cout << "|   [5]  Luu toan bo du lieu ra file txt (Thu cong)           |\n";
+        cout << "|   [6]  Nap lai du lieu tu file txt                          |\n";
+        cout << "|   [7]  Xoa man hinh console (Clear)                         |\n";
         cout << "|   [0]  Thoat chuong trinh (Tu dong luu du lieu)             |\n";
         cout << "|                                                             |\n";
         cout << "===============================================================\n";
-        cout << ">> Nhap lua chon cua ban [0-9]: ";
+        cout << ">> Nhap lua chon cua ban [0-7]: ";
         if (!(cin >> luaChonChinh)) { xoaBoDem(); continue; }
 
         switch (luaChonChinh) {
@@ -94,28 +92,20 @@ int main() {
                 xoaManHinh();
                 break;
             case 5:
-                xoaManHinh();
-                thuePhongTro(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
-                break;
-            case 6:
-                xoaManHinh();
-                traPhongTro(qlPhong, qlHopDong, qlNguoiThue, qlHoaDon);
-                break;
-            case 7:
                 if (luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon, dirData)) {
                     inThongBaoThanhCong("Da luu toan bo du lieu ra cac file txt trong " + dirData);
                 } else {
                     inThongBaoLoi("Loi khi ghi du lieu ra file!");
                 }
                 break;
-            case 8:
+            case 6:
                 if (docTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon, dirData)) {
                     inThongBaoThanhCong("Da nap lai toan bo du lieu thanh cong tu " + dirData);
                 } else {
                     inThongBaoLoi("Khong the doc du lieu tu file!");
                 }
                 break;
-            case 9:
+            case 7:
                 xoaManHinh();
                 break;
             case 0:
