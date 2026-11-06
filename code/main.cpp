@@ -3,6 +3,7 @@
 #include <iomanip>
 #include <cstdlib>
 #include <windows.h>
+#include <conio.h>
 
 using namespace std;
 
@@ -19,6 +20,7 @@ using namespace std;
 #include "QuanLyHopDong.h"
 #include "QuanLyHoaDon.h"
 #include "DocGhiFile.h"
+#include "DoHoa.h"
 #include "GiaoDien.h"
 #include "Menu.h"
 
@@ -26,8 +28,7 @@ using namespace std;
 //  MAIN
 // ================================================================
 int main() {
-    SetConsoleOutputCP(65001);
-    SetConsoleCP(65001);
+    caiDatConsole();
 
     QuanLyPhong qlPhong;
     QuanLyNguoiThue qlNguoiThue;
@@ -43,67 +44,60 @@ int main() {
         khoiTaoDuLieuMau(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
     }
 
-    cout << "\n[+] Da ket noi va nap du lieu thanh cong tu thu muc: " << dirData << "\n";
-    cout << "    + Phong tro : " << qlPhong.layDanhSachPhong().size() << " phong\n";
-    cout << "    + Nguoi thue: " << qlNguoiThue.layDanhSachNguoiThue().size() << " nguoi\n";
-    cout << "    + Hop dong  : " << qlHopDong.layDanhSachHopDong().size() << " hop dong\n";
-    cout << "    + Hoa don   : " << qlHoaDon.layDanhSachHoaDon().size() << " hoa don\n";
+    const MucLuaChon dsMenuChinh[] = {
+        {1, "[1]  Quan ly danh sach phong tro (Kem thong tin khach)", ""},
+        {2, "[2]  Quan ly danh sach nguoi thue (Khach hang)", ""},
+        {3, "[3]  Quan ly hop dong thue (Lien ket phong & nguoi thue)", ""},
+        {4, "[4]  Quan ly hoa don thanh toan (Ky thanh toan & cong no)", ""},
+        {5, "[5]  Luu toan bo du lieu ra file txt (Thu cong)", ""},
+        {6, "[6]  Nap lai du lieu tu file txt", ""},
+        {7, "[7]  Xoa man hinh console (Clear)", ""},
+        {0, "[0]  Thoat chuong trinh (Tu dong luu du lieu)", ""}
+    };
+    int soMuc = sizeof(dsMenuChinh) / sizeof(dsMenuChinh[0]);
 
     int luaChonChinh = -1;
     while (luaChonChinh != 0) {
-        cout << "\n";
-        cout << "===============================================================\n";
-        cout << "|              HE THONG QUAN LY PHONG TRO (PBL2)              |\n";
-        cout << "|           KHOA CONG NGHE THONG TIN - DH BACH KHOA           |\n";
-        cout << "===============================================================\n";
-        cout << "|                                                             |\n";
-        cout << "|   [1]  Quan ly danh sach phong tro (Kem thong tin khach)    |\n";
-        cout << "|   [2]  Quan ly danh sach nguoi thue                         |\n";
-        cout << "|   [3]  Quan ly hop dong thue (Lien ket phong & nguoi thue)  |\n";
-        cout << "|   [4]  Quan ly hoa don thanh toan (Ky thanh toan & cong no) |\n";
-        cout << "|   [5]  Luu toan bo du lieu ra file txt (Thu cong)           |\n";
-        cout << "|   [6]  Nap lai du lieu tu file txt                          |\n";
-        cout << "|   [7]  Xoa man hinh console (Clear)                         |\n";
-        cout << "|   [0]  Thoat chuong trinh (Tu dong luu du lieu)             |\n";
-        cout << "|                                                             |\n";
-        cout << "===============================================================\n";
-        cout << ">> Nhap lua chon cua ban [0-7]: ";
-        if (!(cin >> luaChonChinh)) { xoaBoDem(); continue; }
+        xoaManHinh();
+        veBannerPBL2(
+            qlPhong.layDanhSachPhong().size(),
+            qlNguoiThue.layDanhSachNguoiThue().size(),
+            qlHopDong.layDanhSachHopDong().size(),
+            qlHoaDon.layDanhSachHoaDon().size()
+        );
+
+        luaChonChinh = menuDieuHuongDong("HỆ THỐNG QUẢN LÝ PHÒNG TRỌ - MENU CHÍNH", dsMenuChinh, soMuc, 12, -1, 84);
 
         switch (luaChonChinh) {
             case 1:
-                xoaManHinh();
                 menuPhongTro(qlPhong, qlHopDong, qlNguoiThue, qlHoaDon);
-                xoaManHinh();
                 break;
             case 2:
-                xoaManHinh();
                 menuNguoiThue(qlNguoiThue, qlHopDong, qlPhong, qlHoaDon);
-                xoaManHinh();
                 break;
             case 3:
-                xoaManHinh();
                 menuHopDong(qlHopDong, qlPhong, qlNguoiThue, qlHoaDon);
-                xoaManHinh();
                 break;
             case 4:
-                xoaManHinh();
                 menuHoaDon(qlHoaDon, qlPhong, qlNguoiThue, qlHopDong);
-                xoaManHinh();
                 break;
             case 5:
+                xoaManHinh();
                 if (luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon, dirData)) {
                     inThongBaoThanhCong("Da luu toan bo du lieu ra cac file txt trong " + dirData);
                 } else {
                     inThongBaoLoi("Loi khi ghi du lieu ra file!");
                 }
+                dungManHinh();
                 break;
             case 6:
+                xoaManHinh();
                 if (docTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon, dirData)) {
                     inThongBaoThanhCong("Da nap lai toan bo du lieu thanh cong tu " + dirData);
                 } else {
                     inThongBaoLoi("Khong the doc du lieu tu file!");
                 }
+                dungManHinh();
                 break;
             case 7:
                 xoaManHinh();
@@ -111,13 +105,16 @@ int main() {
             case 0:
                 // Tu dong luu toan bo du lieu truoc khi ket thuc chuong trinh
                 luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon, dirData);
-                cout << "\n===============================================================\n";
-                cout << "| [+] DA TU DONG LUU TOAN BO DU LIEU VAO FOLDER DATA!         |\n";
-                cout << "|         CAM ON BAN DA SU DUNG CHUONG TRINH! TAM BIET!       |\n";
-                cout << "===============================================================\n\n";
+                xoaManHinh();
+                cout << "\n";
+                datMau(MAU_XANH_LA_SANG, 0);
+                cout << "  ╔═══════════════════════════════════════════════════════════════════════════╗\n";
+                cout << "  ║     [✔] ĐÃ TỰ ĐỘNG LƯU TOÀN BỘ DỮ LIỆU AN TOÀN VÀO THƯ MỤC DATA!          ║\n";
+                cout << "  ║             CẢM ƠN BẠN ĐÃ SỬ DỤNG CHƯƠNG TRÌNH! TẠM BIỆT!                 ║\n";
+                cout << "  ╚═══════════════════════════════════════════════════════════════════════════╝\n\n";
+                khoiPhucMau();
                 break;
             default:
-                inThongBaoLoi("Lua chon khong hop le, vui long chon lai!");
                 break;
         }
     }
