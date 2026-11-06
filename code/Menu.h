@@ -554,13 +554,11 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
         cout << "|  [9]  Tim kiem phong tro CO GAC LUNG                        |\n";
         cout << "|  [10] Tim kiem phong tro co DIEN TICH LON HON x (m2)        |\n";
         cout << "|  [11] Xem so theo doi thanh toan tung thang cua mot phong   |\n";
-        cout << "|  [12] Thue phong tro (Tu dong tao Hop dong & Hoa don)       |\n";
-        cout << "|  [13] Tra phong tro (Thanh ly hop dong)                     |\n";
-        cout << "|  [14] Sap xep danh sach phong tro (Dien tich, Gia thue)     |\n";
-        cout << "|  [15] Xoa man hinh console (Clear)                          |\n";
+        cout << "|  [12] Sap xep danh sach phong tro (Dien tich, Gia thue)     |\n";
+        cout << "|  [13] Xoa man hinh console (Clear)                          |\n";
         cout << "|  [0]  Quay lai menu chinh                                   |\n";
         cout << "+-------------------------------------------------------------+\n";
-        cout << ">> Nhap lua chon cua ban [0-15]: ";
+        cout << ">> Nhap lua chon cua ban [0-13]: ";
         if (!(cin >> luaChon)) { xoaBoDem(); continue; }
 
         if (luaChon == 1) {
@@ -692,12 +690,8 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
                 }
             }
         } else if (luaChon == 12) {
-            thuePhongTro(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
-        } else if (luaChon == 13) {
-            traPhongTro(qlPhong, qlHopDong, qlNguoiThue, qlHoaDon);
-        } else if (luaChon == 14) {
             menuSapXepPhong(qlPhong, qlHopDong, qlNguoiThue, qlHoaDon);
-        } else if (luaChon == 15) {
+        } else if (luaChon == 13) {
             xoaManHinh();
         }
     }
@@ -866,7 +860,20 @@ void menuHopDong(QuanLyHopDong& qlHopDong, QuanLyPhong& qlPhong, QuanLyNguoiThue
                 if (hd.getMaHopDong() == 0) {
                     inThongBaoLoi("Khong tim thay hop dong ma: " + to_string(ma));
                 } else {
+                    int maPhongLienQuan = hd.getMaPhong();
                     qlHopDong.xoaHopDong(ma);
+
+                    // Dong bo trang thai phong: Neu phong nay khong con hop dong nao khac -> chuyen ve "Con trong"
+                    PhongTro* pt = qlPhong.timKiemPhongTro(maPhongLienQuan);
+                    if (pt != nullptr) {
+                        LinkedList<HopDongThue> dsConLai = qlHopDong.layDanhSachHopDongTheoPhong(maPhongLienQuan);
+                        if (dsConLai.empty()) {
+                            pt->setTinhTrang("Con trong");
+                            cout << "[i] Phong " << pt->getTenPhong() << " (Ma: " << maPhongLienQuan 
+                                 << ") khong con hop dong thue nao -> Da tu dong cap nhat ve: Con trong!\n";
+                        }
+                    }
+
                     luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
                     inThongBaoThanhCong("Da xoa hop dong ma " + to_string(ma) + " (Da cap nhat file)!");
                 }
