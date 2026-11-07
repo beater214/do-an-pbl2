@@ -137,24 +137,28 @@ public:
         while (getline(fin, line)) {
             if (!line.empty() && line.back() == '\r') line.pop_back();
             if (line.empty() || line[0] == '#') continue;
-            stringstream ss(line);
-            string loai, sMa, ten, tinhTrang, dienTich, sGia, sExtra;
-            if (getline(ss, loai, '|') &&
-                getline(ss, sMa, '|') &&
-                getline(ss, ten, '|') &&
-                getline(ss, tinhTrang, '|') &&
-                getline(ss, dienTich, '|') &&
-                getline(ss, sGia, '|') &&
-                getline(ss, sExtra, '|')) {
-                int ma = stoi(sMa);
-                double gia = stod(sGia);
-                if (loai == "THUONG") {
-                    bool gac = (sExtra == "1" || sExtra == "true");
-                    danhSachPhong.push_back(new PhongTroThuong(ma, ten, tinhTrang, dienTich, gia, gac));
-                } else if (loai == "VIP") {
-                    double phi = stod(sExtra);
-                    danhSachPhong.push_back(new PhongTroVip(ma, ten, tinhTrang, dienTich, gia, phi));
+            try {
+                stringstream ss(line);
+                string loai, sMa, ten, tinhTrang, dienTich, sGia, sExtra;
+                if (getline(ss, loai, '|') &&
+                    getline(ss, sMa, '|') &&
+                    getline(ss, ten, '|') &&
+                    getline(ss, tinhTrang, '|') &&
+                    getline(ss, dienTich, '|') &&
+                    getline(ss, sGia, '|') &&
+                    getline(ss, sExtra, '|')) {
+                    int ma = stoi(sMa);
+                    double gia = stod(sGia);
+                    if (loai == "THUONG") {
+                        bool gac = (sExtra == "1" || sExtra == "true");
+                        danhSachPhong.push_back(new PhongTroThuong(ma, ten, tinhTrang, dienTich, gia, gac));
+                    } else if (loai == "VIP") {
+                        double phi = stod(sExtra);
+                        danhSachPhong.push_back(new PhongTroVip(ma, ten, tinhTrang, dienTich, gia, phi));
+                    }
                 }
+            } catch (...) {
+                // Bo qua dong du lieu sai cu phap de tranh crash chuong trinh
             }
         }
         fin.close();

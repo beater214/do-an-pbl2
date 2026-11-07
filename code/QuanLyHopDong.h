@@ -174,21 +174,25 @@ public:
         while (getline(fin, line)) {
             if (!line.empty() && line.back() == '\r') line.pop_back();
             if (line.empty() || line[0] == '#') continue;
-            stringstream ss(line);
-            string sMaHD, sMaPhong, sMaNT, sNgayLap, sThoiHan, sGiaThue;
-            if (getline(ss, sMaHD, '|') &&
-                getline(ss, sMaPhong, '|') &&
-                getline(ss, sMaNT, '|') &&
-                getline(ss, sNgayLap, '|') &&
-                getline(ss, sThoiHan, '|') &&
-                getline(ss, sGiaThue, '|')) {
-                int maHD = stoi(sMaHD);
-                int maP = stoi(sMaPhong);
-                int maNT = stoi(sMaNT);
-                Date nl = Date::fromString(sNgayLap);
-                int th = stoi(sThoiHan);
-                double gia = stod(sGiaThue);
-                danhSachHopDong.push_back(HopDongThue(maHD, maP, maNT, nl, th, gia));
+            try {
+                stringstream ss(line);
+                string sMaHD, sMaPhong, sMaNT, sNgayLap, sThoiHan, sGiaThue;
+                if (getline(ss, sMaHD, '|') &&
+                    getline(ss, sMaPhong, '|') &&
+                    getline(ss, sMaNT, '|') &&
+                    getline(ss, sNgayLap, '|') &&
+                    getline(ss, sThoiHan, '|') &&
+                    getline(ss, sGiaThue, '|')) {
+                    int maHD = stoi(sMaHD);
+                    int maP = stoi(sMaPhong);
+                    int maNT = stoi(sMaNT);
+                    Date nl = Date::fromString(sNgayLap);
+                    int th = stoi(sThoiHan);
+                    double gia = stod(sGiaThue);
+                    danhSachHopDong.push_back(HopDongThue(maHD, maP, maNT, nl, th, gia));
+                }
+            } catch (...) {
+                // Bo qua dong hop dong sai cu phap
             }
         }
         fin.close();

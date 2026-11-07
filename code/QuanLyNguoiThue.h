@@ -61,15 +61,19 @@ public:
         while (getline(fin, line)) {
             if (!line.empty() && line.back() == '\r') line.pop_back();
             if (line.empty() || line[0] == '#') continue;
-            stringstream ss(line);
-            string sMa, hoTen, sNgaySinh, sdt;
-            if (getline(ss, sMa, '|') &&
-                getline(ss, hoTen, '|') &&
-                getline(ss, sNgaySinh, '|') &&
-                getline(ss, sdt, '|')) {
-                int ma = stoi(sMa);
-                Date ns = Date::fromString(sNgaySinh);
-                danhSachNguoiThue.push_back(new NguoiThue(ma, hoTen, ns, sdt));
+            try {
+                stringstream ss(line);
+                string sMa, hoTen, sNgaySinh, sdt;
+                if (getline(ss, sMa, '|') &&
+                    getline(ss, hoTen, '|') &&
+                    getline(ss, sNgaySinh, '|') &&
+                    getline(ss, sdt, '|')) {
+                    int ma = stoi(sMa);
+                    Date ns = Date::fromString(sNgaySinh);
+                    danhSachNguoiThue.push_back(new NguoiThue(ma, hoTen, ns, sdt));
+                }
+            } catch (...) {
+                // Bo qua dong du lieu sai cu phap
             }
         }
         fin.close();

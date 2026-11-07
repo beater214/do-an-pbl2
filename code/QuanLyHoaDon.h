@@ -212,26 +212,30 @@ public:
         while (getline(fin, line)) {
             if (!line.empty() && line.back() == '\r') line.pop_back();
             if (line.empty() || line[0] == '#') continue;
-            stringstream ss(line);
-            string maHD, sMaP, sMaNT, sNgayLap, sThangTT, sNamTT, sPhong, sDien, sNuoc;
-            if (getline(ss, maHD, '|') &&
-                getline(ss, sMaP, '|') &&
-                getline(ss, sMaNT, '|') &&
-                getline(ss, sNgayLap, '|') &&
-                getline(ss, sThangTT, '|') &&
-                getline(ss, sNamTT, '|') &&
-                getline(ss, sPhong, '|') &&
-                getline(ss, sDien, '|') &&
-                getline(ss, sNuoc, '|')) {
-                int maP = stoi(sMaP);
-                int maNT = stoi(sMaNT);
-                Date nl = Date::fromString(sNgayLap);
-                int thangTT = stoi(sThangTT);
-                int namTT = stoi(sNamTT);
-                double phong = stod(sPhong);
-                double dien = stod(sDien);
-                double nuoc = stod(sNuoc);
-                danhSachHoaDon.push_back(HoaDon(maHD, maP, maNT, nl, thangTT, namTT, phong, dien, nuoc));
+            try {
+                stringstream ss(line);
+                string maHD, sMaP, sMaNT, sNgayLap, sThangTT, sNamTT, sPhong, sDien, sNuoc;
+                if (getline(ss, maHD, '|') &&
+                    getline(ss, sMaP, '|') &&
+                    getline(ss, sMaNT, '|') &&
+                    getline(ss, sNgayLap, '|') &&
+                    getline(ss, sThangTT, '|') &&
+                    getline(ss, sNamTT, '|') &&
+                    getline(ss, sPhong, '|') &&
+                    getline(ss, sDien, '|') &&
+                    getline(ss, sNuoc, '|')) {
+                    int maP = stoi(sMaP);
+                    int maNT = stoi(sMaNT);
+                    Date nl = Date::fromString(sNgayLap);
+                    int thangTT = stoi(sThangTT);
+                    int namTT = stoi(sNamTT);
+                    double phong = stod(sPhong);
+                    double dien = stod(sDien);
+                    double nuoc = stod(sNuoc);
+                    danhSachHoaDon.push_back(HoaDon(maHD, maP, maNT, nl, thangTT, namTT, phong, dien, nuoc));
+                }
+            } catch (...) {
+                // Bo qua dong hoa don sai cu phap
             }
         }
         fin.close();
