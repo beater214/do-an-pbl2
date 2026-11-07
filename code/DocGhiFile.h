@@ -7,7 +7,7 @@ using namespace std;
 //  HE THONG DOC GHI FILE TXT (DATA PERSISTENCE)
 // ================================================================
 
-// Tu dong tim duong dan den thu muc data (Ho tro ca khi chay tu project/ hay tu code/)
+// Tu dong tim duong dan den thu muc data (Ho tro ca khi chay tu project/, tu code/, hoac double-click exe)
 inline string timDuongDanThuMucData() {
     ifstream f1("data/phongtro.txt");
     if (f1.is_open()) {
@@ -18,6 +18,26 @@ inline string timDuongDanThuMucData() {
     if (f2.is_open()) {
         f2.close();
         return "../data/";
+    }
+
+    // Thu tim theo vi tri thuc te cua file exe tren Windows (ho tro double click ngoai Explorer)
+    char buffer[MAX_PATH];
+    if (GetModuleFileNameA(NULL, buffer, MAX_PATH) > 0) {
+        string exePath(buffer);
+        size_t pos = exePath.find_last_of("\\/");
+        if (pos != string::npos) {
+            string exeDir = exePath.substr(0, pos + 1);
+            ifstream f3(exeDir + "data/phongtro.txt");
+            if (f3.is_open()) {
+                f3.close();
+                return exeDir + "data/";
+            }
+            ifstream f4(exeDir + "../data/phongtro.txt");
+            if (f4.is_open()) {
+                f4.close();
+                return exeDir + "../data/";
+            }
+        }
     }
     return "data/";
 }

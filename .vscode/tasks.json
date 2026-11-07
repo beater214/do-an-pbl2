@@ -1,0 +1,29 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Biên dịch PBL2 (main.exe ngoài thư mục gốc)",
+            "command": "C:\\ming64\\ucrt64\\bin\\g++.exe",
+            "args": [
+                "-std=c++17",
+                "-Wall",
+                "-Wextra",
+                "-O2",
+                "-o",
+                "${workspaceFolder}\\main.exe",
+                "${workspaceFolder}\\code\\main.cpp"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": ["$gcc"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Biên dịch toàn bộ hệ thống PBL2 ra file main.exe ở thư mục gốc."
+        }
+    ]
+}
+

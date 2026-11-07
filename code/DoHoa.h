@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <iomanip>
 #include <windows.h>
@@ -205,60 +205,78 @@ inline void veHopThoai(int x, int y, int rong, int cao, const string& tieuDe,
 
 // In hop thong bao thanh cong
 inline void inHopThongBaoThanhCong(const string& msg) {
-    int rong = (int)msg.length() + 10;
-    if (rong < 50) rong = 50;
-    if (rong > 120) rong = 120;
+    string prefix = "✔ [THÀNH CÔNG] ";
+    int prefixLen = demKyTuHienThi(prefix);
+    int msgLen = demKyTuHienThi(msg);
+    int noiDungLen = prefixLen + msgLen;
+    int innerWidth = noiDungLen + 4; // 2 o dem trai, 2 o dem phai
+    if (innerWidth < 50) innerWidth = 50;
 
     cout << "\n";
     datMau(MAU_XANH_LA_SANG, 0);
     cout << "  ┌";
-    for (int i = 0; i < rong - 2; ++i) cout << "─";
+    for (int i = 0; i < innerWidth; ++i) cout << "─";
     cout << "┐\n";
 
-    cout << "  │  ✔ [THÀNH CÔNG] " << left << setw(rong - 20) << msg << " │\n";
+    cout << "  │  " << prefix << msg;
+    int padRight = innerWidth - 2 - noiDungLen;
+    for (int i = 0; i < padRight; ++i) cout << " ";
+    cout << "│\n";
 
     cout << "  └";
-    for (int i = 0; i < rong - 2; ++i) cout << "─";
+    for (int i = 0; i < innerWidth; ++i) cout << "─";
     cout << "┘\n";
     khoiPhucMau();
 }
 
 // In hop thong bao loi
 inline void inHopThongBaoLoi(const string& msg) {
-    int rong = (int)msg.length() + 10;
-    if (rong < 50) rong = 50;
-    if (rong > 120) rong = 120;
+    string prefix = "✖ [THÔNG BÁO LỖI] ";
+    int prefixLen = demKyTuHienThi(prefix);
+    int msgLen = demKyTuHienThi(msg);
+    int noiDungLen = prefixLen + msgLen;
+    int innerWidth = noiDungLen + 4;
+    if (innerWidth < 50) innerWidth = 50;
 
     cout << "\n";
     datMau(MAU_DO_SANG, 0);
     cout << "  ┌";
-    for (int i = 0; i < rong - 2; ++i) cout << "─";
+    for (int i = 0; i < innerWidth; ++i) cout << "─";
     cout << "┐\n";
 
-    cout << "  │  ✖ [THÔNG BÁO LỖI] " << left << setw(rong - 24) << msg << " │\n";
+    cout << "  │  " << prefix << msg;
+    int padRight = innerWidth - 2 - noiDungLen;
+    for (int i = 0; i < padRight; ++i) cout << " ";
+    cout << "│\n";
 
     cout << "  └";
-    for (int i = 0; i < rong - 2; ++i) cout << "─";
+    for (int i = 0; i < innerWidth; ++i) cout << "─";
     cout << "┘\n";
     khoiPhucMau();
 }
 
 // In hop thong bao thong tin / huong dan
 inline void inHopThongBaoThongTin(const string& msg) {
-    int rong = (int)msg.length() + 10;
-    if (rong < 50) rong = 50;
-    if (rong > 120) rong = 120;
+    string prefix = "ℹ [THÔNG TIN] ";
+    int prefixLen = demKyTuHienThi(prefix);
+    int msgLen = demKyTuHienThi(msg);
+    int noiDungLen = prefixLen + msgLen;
+    int innerWidth = noiDungLen + 4;
+    if (innerWidth < 50) innerWidth = 50;
 
     cout << "\n";
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << "  ┌";
-    for (int i = 0; i < rong - 2; ++i) cout << "─";
+    for (int i = 0; i < innerWidth; ++i) cout << "─";
     cout << "┐\n";
 
-    cout << "  │  ℹ [THÔNG TIN] " << left << setw(rong - 19) << msg << " │\n";
+    cout << "  │  " << prefix << msg;
+    int padRight = innerWidth - 2 - noiDungLen;
+    for (int i = 0; i < padRight; ++i) cout << " ";
+    cout << "│\n";
 
     cout << "  └";
-    for (int i = 0; i < rong - 2; ++i) cout << "─";
+    for (int i = 0; i < innerWidth; ++i) cout << "─";
     cout << "┘\n";
     khoiPhucMau();
 }

@@ -75,8 +75,11 @@ void hienThiBangPhongTro(const LinkedList<PhongTro*>& ds, const QuanLyHopDong& q
     if (ds.empty()) {
         datMau(MAU_XAM_SANG, 0);
         cout << "│ ";
-        inCanhTrai("Danh sách phòng trọ hiện đang trống!", 128);
+        inCanhTrai("Danh sách phòng trọ hiện đang trống!", 131);
         cout << " │\n";
+        khoiPhucMau();
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\n";
         khoiPhucMau();
     } else {
         int stt = 0;
@@ -143,10 +146,10 @@ void hienThiBangPhongTro(const LinkedList<PhongTro*>& ds, const QuanLyHopDong& q
             cout << " │\n";
             khoiPhucMau();
         }
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└──────┴──────────────────────┴────────────┴───────────┴─────────────────┴─────────────────┴──────────────────────────────────────────┘\n";
+        khoiPhucMau();
     }
-
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "└──────┴──────────────────────┴────────────┴───────────┴─────────────────┴─────────────────┴──────────────────────────────────────────┘\n";
     datMau(MAU_XAM_SANG, 0);
     cout << "  (Tổng số phòng: " << ds.size() << " phòng)\n";
     khoiPhucMau();
@@ -172,8 +175,11 @@ void hienThiBangPhongTro(const LinkedList<PhongTro*>& ds) {
     if (ds.empty()) {
         datMau(MAU_XAM_SANG, 0);
         cout << "│ ";
-        inCanhTrai("Danh sách phòng trọ hiện đang trống!", 85);
+        inCanhTrai("Danh sách phòng trọ hiện đang trống!", 88);
         cout << " │\n";
+        khoiPhucMau();
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└──────────────────────────────────────────────────────────────────────────────────────────┘\n";
         khoiPhucMau();
     } else {
         int stt = 0;
@@ -215,10 +221,10 @@ void hienThiBangPhongTro(const LinkedList<PhongTro*>& ds) {
             cout << " │\n";
             khoiPhucMau();
         }
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└──────┴──────────────────────┴────────────┴───────────┴─────────────────┴─────────────────┘\n";
+        khoiPhucMau();
     }
-
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "└──────┴──────────────────────┴────────────┴───────────┴─────────────────┴─────────────────┘\n";
     khoiPhucMau();
 }
 
@@ -244,8 +250,11 @@ void hienThiBangNguoiThue(const LinkedList<NguoiThue*>& ds, const QuanLyHopDong&
     if (ds.empty()) {
         datMau(MAU_XAM_SANG, 0);
         cout << "│ ";
-        inCanhTrai("Danh sách khách thuê hiện đang trống!", 88);
+        inCanhTrai("Danh sách khách thuê hiện đang trống!", 90);
         cout << " │\n";
+        khoiPhucMau();
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└────────────────────────────────────────────────────────────────────────────────────────────┘\n";
         khoiPhucMau();
     } else {
         int stt = 0;
@@ -286,10 +295,10 @@ void hienThiBangNguoiThue(const LinkedList<NguoiThue*>& ds, const QuanLyHopDong&
             cout << " │\n";
             khoiPhucMau();
         }
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└──────┴────────────────────────────────┴────────────┴────────────────┴──────────────────────┘\n";
+        khoiPhucMau();
     }
-
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "└──────┴────────────────────────────────┴────────────┴────────────────┴──────────────────────┘\n";
     datMau(MAU_XAM_SANG, 0);
     cout << "  (Tổng số khách thuê: " << ds.size() << " người)\n";
     khoiPhucMau();
@@ -324,8 +333,11 @@ void hienThiBangHopDong(const LinkedList<HopDongThue>& ds, const QuanLyNguoiThue
     if (ds.empty()) {
         datMau(MAU_XAM_SANG, 0);
         cout << "│ ";
-        inCanhTrai("Danh sách hợp đồng hiện đang trống!", 105);
+        inCanhTrai("Danh sách hợp đồng hiện đang trống!", 109);
         cout << " │\n";
+        khoiPhucMau();
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└───────────────────────────────────────────────────────────────────────────────────────────────────────────┘\n";
         khoiPhucMau();
     } else {
         int stt = 0;
@@ -373,10 +385,10 @@ void hienThiBangHopDong(const LinkedList<HopDongThue>& ds, const QuanLyNguoiThue
             cout << " │\n";
             khoiPhucMau();
         }
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└────────┴──────────┴───────┴────────────────────────────────┴────────────┴───────────────┴─────────────────────┘\n";
+        khoiPhucMau();
     }
-
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "└────────┴──────────┴───────┴────────────────────────────────┴────────────┴───────────────┴─────────────────────┘\n";
     datMau(MAU_XAM_SANG, 0);
     cout << "  (Tổng số hợp đồng: " << ds.size() << " hợp đồng)\n";
     khoiPhucMau();
@@ -414,8 +426,11 @@ void hienThiBangHoaDon(const LinkedList<HoaDon>& ds, double tongDoanhThu, const 
     if (ds.empty()) {
         datMau(MAU_XAM_SANG, 0);
         cout << "│ ";
-        inCanhTrai("Danh sách hóa đơn hiện đang trống!", 144);
+        inCanhTrai("Danh sách hóa đơn hiện đang trống!", 148);
         cout << " │\n";
+        khoiPhucMau();
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\n";
         khoiPhucMau();
     } else {
         int stt = 0;
@@ -478,20 +493,21 @@ void hienThiBangHoaDon(const LinkedList<HoaDon>& ds, double tongDoanhThu, const 
             cout << " │\n";
             khoiPhucMau();
         }
-    }
 
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "├────────────┴──────────┴───────┴──────────────────────┴────────────┴─────────┴────────────────┴────────────────┴────────────────┼─────────────────────┤\n";
-    cout << "│ ";
-    datMau(MAU_VANG_SANG, 0);
-    inCanhTrai("TỔNG DOANH THU TOÀN BỘ HÓA ĐƠN", 122);
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << " │ ";
-    datMau(MAU_VANG_SANG, 0);
-    inCanhPhai(dinhDangTien((long long)tongDoanhThu), 19);
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << " │\n";
-    cout << "└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────┘\n";
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "├────────────┴──────────┴───────┴──────────────────────┴────────────┴─────────┴────────────────┴────────────────┴────────────────┼─────────────────────┤\n";
+        cout << "│ ";
+        datMau(MAU_VANG_SANG, 0);
+        inCanhTrai("TỔNG DOANH THU TOÀN BỘ HÓA ĐƠN", 126);
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << " │ ";
+        datMau(MAU_VANG_SANG, 0);
+        inCanhPhai(dinhDangTien((long long)tongDoanhThu), 19);
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << " │\n";
+        cout << "└────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴─────────────────────┘\n";
+        khoiPhucMau();
+    }
     datMau(MAU_XAM_SANG, 0);
     cout << "  (Tổng số hóa đơn: " << ds.size() << " hóa đơn)\n";
     khoiPhucMau();
@@ -534,8 +550,11 @@ void hienThiBangKhachChuaDongTien(const LinkedList<ThongTinChuaDongTien>& ds, in
     if (ds.empty()) {
         datMau(MAU_XANH_LA_SANG, 0);
         cout << "│ ";
-        inCanhTrai("✔ Tất cả khách hàng đều đã hoàn tất đóng tiền phòng tháng này!", 96);
+        inCanhTrai("✔ Tất cả khách hàng đều đã hoàn tất đóng tiền phòng tháng này!", 101);
         cout << " │\n";
+        khoiPhucMau();
+        datMau(MAU_DO_SANG, 0);
+        cout << "└───────────────────────────────────────────────────────────────────────────────────────────────────┘\n";
         khoiPhucMau();
     } else {
         int stt = 0;
@@ -579,18 +598,16 @@ void hienThiBangKhachChuaDongTien(const LinkedList<ThongTinChuaDongTien>& ds, in
         cout << "│ ";
         datMau(MAU_VANG_SANG, 0);
         string tieuDeNo = "TỔNG TIỀN PHÒNG CÒN NỢ THÁNG " + to_string(thang) + "/" + to_string(nam);
-        inCanhTrai(tieuDeNo, 73);
+        inCanhTrai(tieuDeNo, 78);
         datMau(MAU_DO_SANG, 0);
         cout << " │ ";
         datMau(MAU_DO_SANG, 0);
         inCanhPhai(dinhDangTien((long long)tongNo), 20);
         datMau(MAU_DO_SANG, 0);
         cout << " │\n";
+        cout << "└────────────────────────────────────────────────────────────────────────────────┴──────────────────────┘\n";
+        khoiPhucMau();
     }
-
-    datMau(MAU_DO_SANG, 0);
-    cout << "└────────────────────────────────────────────────────────────────────────────────┴──────────────────────┘\n";
-    khoiPhucMau();
 }
 
 // ================================================================
@@ -598,48 +615,65 @@ void hienThiBangKhachChuaDongTien(const LinkedList<ThongTinChuaDongTien>& ds, in
 // ================================================================
 void hienThiThongKeDoanhThuThang(int thang, int nam, double tongPhong, double tongDien, double tongNuoc, double tongCong) {
     cout << "\n";
+    int innerWidth = 76;
     datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "  ╔═══════════════════════════════════════════════════════════════════════════╗\n";
+    cout << "  ╔";
+    for (int i = 0; i < innerWidth; ++i) cout << "═";
+    cout << "╗\n";
+
     cout << "  ║ ";
-    datMau(MAU_VANG_SANG, 0);
     string titleCard = "BÁO CÁO DOANH THU THÁNG " + (thang < 10 ? string("0") : string("")) + to_string(thang) + "/" + to_string(nam);
-    inCanGiua(titleCard, 73, MAU_VANG_SANG, 0);
+    inCanGiua(titleCard, innerWidth - 2, MAU_VANG_SANG, 0);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
-    cout << "  ╠═══════════════════════════════════════════════════════════════════════════╣\n";
-    cout << "  ║ ";
-    datMau(MAU_TRANG_SANG, 0);
-    cout << " 1. Doanh thu tiền phòng trọ : ";
-    datMau(MAU_VANG_SANG, 0);
-    cout << right << setw(22) << dinhDangTien((long long)tongPhong) << " VND ";
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "          ║\n";
 
-    cout << "  ║ ";
-    datMau(MAU_TRANG_SANG, 0);
-    cout << " 2. Doanh thu tiền điện       : ";
-    datMau(MAU_VANG_SANG, 0);
-    cout << right << setw(22) << dinhDangTien((long long)tongDien) << " VND ";
-    datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "          ║\n";
+    cout << "  ╠";
+    for (int i = 0; i < innerWidth; ++i) cout << "═";
+    cout << "╣\n";
 
-    cout << "  ║ ";
+    // Hang 1
+    cout << "  ║  ";
     datMau(MAU_TRANG_SANG, 0);
-    cout << " 3. Doanh thu tiền nước       : ";
+    inCanhTrai("1. Doanh thu tiền phòng trọ :", 32);
     datMau(MAU_VANG_SANG, 0);
-    cout << right << setw(22) << dinhDangTien((long long)tongNuoc) << " VND ";
+    inCanhPhai(dinhDangTien((long long)tongPhong) + " VND", 38);
     datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "          ║\n";
+    cout << "  ║\n";
 
-    cout << "  ╠═══════════════════════════════════════════════════════════════════════════╣\n";
-    cout << "  ║ ";
+    // Hang 2
+    cout << "  ║  ";
+    datMau(MAU_TRANG_SANG, 0);
+    inCanhTrai("2. Doanh thu tiền điện       :", 32);
+    datMau(MAU_VANG_SANG, 0);
+    inCanhPhai(dinhDangTien((long long)tongDien) + " VND", 38);
+    datMau(MAU_XANH_NGOC_SANG, 0);
+    cout << "  ║\n";
+
+    // Hang 3
+    cout << "  ║  ";
+    datMau(MAU_TRANG_SANG, 0);
+    inCanhTrai("3. Doanh thu tiền nước       :", 32);
+    datMau(MAU_VANG_SANG, 0);
+    inCanhPhai(dinhDangTien((long long)tongNuoc) + " VND", 38);
+    datMau(MAU_XANH_NGOC_SANG, 0);
+    cout << "  ║\n";
+
+    cout << "  ╠";
+    for (int i = 0; i < innerWidth; ++i) cout << "═";
+    cout << "╣\n";
+
+    // Hang Tong
+    cout << "  ║  ";
     datMau(MAU_XANH_LA_SANG, 0);
-    cout << "  ➔ TỔNG CỘNG DOANH THU THÁNG: ";
+    inCanhTrai("➔ TỔNG CỘNG DOANH THU THÁNG :", 32);
     datMau(MAU_XANH_LA_SANG, 0);
-    cout << right << setw(22) << dinhDangTien((long long)tongCong) << " VND ";
+    inCanhPhai(dinhDangTien((long long)tongCong) + " VND", 38);
     datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "          ║\n";
-    cout << "  ╚═══════════════════════════════════════════════════════════════════════════╝\n";
+    cout << "  ║\n";
+
+    cout << "  ╚";
+    for (int i = 0; i < innerWidth; ++i) cout << "═";
+    cout << "╝\n";
     khoiPhucMau();
 }
 
@@ -668,8 +702,11 @@ void hienThiBangTienDienCao(const LinkedList<HoaDon>& ds, const QuanLyPhong& qlP
     if (ds.empty()) {
         datMau(MAU_XAM_SANG, 0);
         cout << "│ ";
-        inCanhTrai("Không có phòng nào có tiền điện cao hơn mức quy định!", 103);
+        inCanhTrai("Không có phòng nào có tiền điện cao hơn mức quy định!", 110);
         cout << " │\n";
+        khoiPhucMau();
+        datMau(MAU_VANG_CAM, 0);
+        cout << "└────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\n";
         khoiPhucMau();
     } else {
         int stt = 0;
@@ -725,11 +762,10 @@ void hienThiBangTienDienCao(const LinkedList<HoaDon>& ds, const QuanLyPhong& qlP
             cout << " │\n";
             khoiPhucMau();
         }
+        datMau(MAU_VANG_CAM, 0);
+        cout << "└────────────┴──────────┴──────────────────────┴───────┴──────────────────────┴────────────┴─────────────────────┘\n";
+        khoiPhucMau();
     }
-
-    datMau(MAU_VANG_CAM, 0);
-    cout << "└────────────┴──────────┴──────────────────────┴───────┴──────────────────────┴────────────┴─────────────────────┘\n";
-    khoiPhucMau();
 }
 
 // ================================================================
@@ -740,34 +776,34 @@ void hienThiSoTheoDoiThanhToanPhong(int maPhong, const string& tenPhong, const s
                                    int thangHienTai, int namHienTai) {
     cout << "\n";
     datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n";
+    cout << "╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n";
     cout << "║ ";
     datMau(MAU_VANG_SANG, 0);
     string titleSo = "SỔ THEO DÕI THANH TOÁN TỪNG THÁNG - MÃ PHÒNG: " + to_string(maPhong) + " (" + tenPhong + ")";
-    inCanGiua(titleSo, 131, MAU_VANG_SANG, 0);
+    inCanGiua(titleSo, 135, MAU_VANG_SANG, 0);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
-    cout << "╠═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n";
+    cout << "╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n";
     cout << "║ ";
     datMau(MAU_TRANG_SANG, 0);
     string thongTinNT = "Người thuê : " + tenNT + " (Mã NT: " + to_string(hd.getMaNguoiThue()) + ") - SĐT: " + sdtNT;
-    inCanhTrai(thongTinNT, 131);
+    inCanhTrai(thongTinNT, 135);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
     cout << "║ ";
     datMau(MAU_TRANG_SANG, 0);
     string thongTinHD = "Hợp đồng   : Mã HĐ: " + to_string(hd.getMaHopDong()) + " | Bắt đầu: " + hd.getNgayLap().toString() + 
                         " | Thời hạn: " + to_string(hd.getThoiHan()) + " tháng | Giá thuê: " + dinhDangTien((long long)hd.getGiaThue()) + " VND/tháng";
-    inCanhTrai(thongTinHD, 131);
+    inCanhTrai(thongTinHD, 135);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
     cout << "║ ";
     datMau(MAU_VANG_SANG, 0);
     string thongTinMoc = "Mốc tra cứu: Tháng " + (thangHienTai < 10 ? string("0") : string("")) + to_string(thangHienTai) + "/" + to_string(namHienTai);
-    inCanhTrai(thongTinMoc, 131);
+    inCanhTrai(thongTinMoc, 135);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
-    cout << "╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n";
+    cout << "╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n";
 
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << "┌─────┬─────────┬──────────────────────┬────────────┬────────────┬────────────────┬────────────────┬────────────────┬─────────────────────┐\n";
@@ -889,35 +925,35 @@ void hienThiSoTheoDoiThanhToanPhong(int maPhong, const string& tenPhong, const s
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << "└─────┴─────────┴──────────────────────┴────────────┴────────────┴────────────────┴────────────────┴────────────────┴─────────────────────┘\n";
 
-    // Tong ket
+    // Tong ket (dong bo kich thuoc voi bang va the tieu de)
     cout << "\n";
     datMau(MAU_XANH_NGOC_SANG, 0);
-    cout << "  ╔═══════════════════════════════════════════════════════════════════════════════════════════════════╗\n";
-    cout << "  ║ ";
+    cout << "╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n";
+    cout << "║ ";
     datMau(MAU_VANG_SANG, 0);
-    inCanhTrai("[TỔNG KẾT THANH TOÁN CỦA PHÒNG]:", 97);
+    inCanhTrai("[TỔNG KẾT THANH TOÁN CỦA PHÒNG]:", 135);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
-    cout << "  ╠═══════════════════════════════════════════════════════════════════════════════════════════════════╣\n";
-    cout << "  ║ ";
+    cout << "╠═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n";
+    cout << "║ ";
     datMau(MAU_XANH_LA_SANG, 0);
     string strDaThu = "✔ Số tháng ĐÃ THANH TOÁN : " + to_string(soThangDaTra) + " tháng | Tổng tiền đã thu : " + dinhDangTien((long long)tongTienDaThu) + " VND";
-    inCanhTrai(strDaThu, 97);
+    inCanhTrai(strDaThu, 135);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
-    cout << "  ║ ";
+    cout << "║ ";
     datMau(MAU_DO_SANG, 0);
     string strConNo = "✖ Số tháng CHƯA TRẢ (NỢ) : " + to_string(soThangNo) + " tháng | Tiền phòng còn nợ: " + dinhDangTien((long long)tongTienConNo) + " VND";
-    inCanhTrai(strConNo, 97);
+    inCanhTrai(strConNo, 135);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
-    cout << "  ║ ";
+    cout << "║ ";
     datMau(MAU_XAM_SANG, 0);
     string strChuaDen = "ℹ Số tháng CHƯA ĐẾN KỲ   : " + to_string(soThangChuaDen) + " tháng";
-    inCanhTrai(strChuaDen, 97);
+    inCanhTrai(strChuaDen, 135);
     datMau(MAU_XANH_NGOC_SANG, 0);
     cout << " ║\n";
-    cout << "  ╚═══════════════════════════════════════════════════════════════════════════════════════════════════╝\n";
+    cout << "╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n";
     khoiPhucMau();
 }
 
@@ -959,8 +995,11 @@ void hienThiBangTinhTrangThanhToanCacPhong(const LinkedList<ThongTinTinhTrangPho
     if (ds.empty()) {
         datMau(MAU_XAM_SANG, 0);
         cout << "│ ";
-        inCanhTrai("Không có phòng nào đang được thuê trong hệ thống!", 149);
+        inCanhTrai("Không có phòng nào đang được thuê trong hệ thống!", 150);
         cout << " │\n";
+        khoiPhucMau();
+        datMau(MAU_XANH_NGOC_SANG, 0);
+        cout << "└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘\n";
         khoiPhucMau();
     } else {
         int soPhongDaThu = 0;
@@ -1032,33 +1071,33 @@ void hienThiBangTinhTrangThanhToanCacPhong(const LinkedList<ThongTinTinhTrangPho
 
         cout << "\n";
         datMau(MAU_XANH_NGOC_SANG, 0);
-        cout << "  ╔═══════════════════════════════════════════════════════════════════════════════════════════════════╗\n";
-        cout << "  ║ ";
+        cout << "╔══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n";
+        cout << "║ ";
         datMau(MAU_VANG_SANG, 0);
         string headerCongNo = "[TỔNG HỢP CÔNG NỢ THÁNG " + (thang < 10 ? string("0") : string("")) + to_string(thang) + "/" + to_string(nam) + "]:";
-        inCanhTrai(headerCongNo, 97);
+        inCanhTrai(headerCongNo, 150);
         datMau(MAU_XANH_NGOC_SANG, 0);
         cout << " ║\n";
-        cout << "  ╠═══════════════════════════════════════════════════════════════════════════════════════════════════╣\n";
-        cout << "  ║ ";
+        cout << "╠══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣\n";
+        cout << "║ ";
         datMau(MAU_TRANG_SANG, 0);
         string strSoP = "- Tổng số phòng đang thuê: " + to_string(ds.size()) + " phòng";
-        inCanhTrai(strSoP, 97);
+        inCanhTrai(strSoP, 150);
         datMau(MAU_XANH_NGOC_SANG, 0);
         cout << " ║\n";
-        cout << "  ║ ";
+        cout << "║ ";
         datMau(MAU_XANH_LA_SANG, 0);
         string strDaDong = "✔ Số phòng ĐÃ ĐÓNG TIỀN  : " + to_string(soPhongDaThu) + " phòng | Tổng tiền đã thu : " + dinhDangTien((long long)tongDaThu) + " VND";
-        inCanhTrai(strDaDong, 97);
+        inCanhTrai(strDaDong, 150);
         datMau(MAU_XANH_NGOC_SANG, 0);
         cout << " ║\n";
-        cout << "  ║ ";
+        cout << "║ ";
         datMau(MAU_DO_SANG, 0);
         string strConNo = "✖ Số phòng CÒN NỢ TIỀN   : " + to_string(soPhongChuaThu) + " phòng | Tổng tiền còn nợ : " + dinhDangTien((long long)tongConNo) + " VND";
-        inCanhTrai(strConNo, 97);
+        inCanhTrai(strConNo, 150);
         datMau(MAU_XANH_NGOC_SANG, 0);
         cout << " ║\n";
-        cout << "  ╚═══════════════════════════════════════════════════════════════════════════════════════════════════╝\n";
+        cout << "╚══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n";
         khoiPhucMau();
     }
 }

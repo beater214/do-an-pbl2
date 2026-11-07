@@ -144,6 +144,138 @@ int nhapMaNguoiThueMoi(QuanLyNguoiThue& qlNguoiThue) {
 // ================================================================
 //  NGHIEP VU LIEN KET (THUE PHONG & TRA PHONG)
 // ================================================================
+
+// Lay danh sach cac phong tro dang o trang thai "Da thue" nhung chua co hop dong lien ket
+LinkedList<PhongTro*> layDanhSachPhongChuaCoHopDong(const QuanLyPhong& qlPhong, const QuanLyHopDong& qlHopDong) {
+    LinkedList<PhongTro*> res;
+    for (PhongTro* pt : qlPhong.layDanhSachPhong()) {
+        if (pt->getTinhTrang() == "Da thue") {
+            if (qlHopDong.timMaNguoiThueTheoPhong(pt->getMaPhong()) == 0) {
+                res.push_back(pt);
+            }
+        }
+    }
+    return res;
+}
+
+// Thuc hien quy trinh lap hop dong va gan khach thue cho mot phong cu the
+bool lienKetHopDongChoPhong(PhongTro* pt, QuanLyNguoiThue& qlNguoiThue, QuanLyHopDong& qlHopDong) {
+    if (pt == nullptr) return false;
+    int maPhong = pt->getMaPhong();
+
+    datMau(MAU_XANH_NGOC_SANG, 0);
+    cout << "\n  ─────────────────────────────────────────────────────────────────────────\n";
+    cout << "  ➔ THIẾT LẬP HỢP ĐỒNG & KHÁCH THUÊ CHO PHÒNG " << maPhong << " (" << pt->getTenPhong() << ")\n";
+    cout << "  ─────────────────────────────────────────────────────────────────────────\n";
+    khoiPhucMau();
+
+    // 1. Chon hoac tao nguoi thue
+    cout << "  [1. Thong tin khach thue]:\n";
+    cout << "    [1] Chon khach thue da co trong he thong\n";
+    cout << "    [2] Them khach thue moi hoan toan vao he thong\n";
+    cout << "    [0] Bo qua (Huy thao tac nay)\n";
+    int chonNT = nhapSoNguyen("  ➔ Nhap lua chon [0-2]: ", 0, 2);
+
+    if (chonNT == 0) return false;
+
+    int maNT = 0;
+    NguoiThue* nt = nullptr;
+
+    if (chonNT == 1) {
+        if (qlNguoiThue.layDanhSachNguoiThue().empty()) {
+            cout << "  [!] Danh sach khach thue hien tai dang trong. Chuyen sang them moi.\n";
+            chonNT = 2;
+        } else {
+            while (nt == nullptr) {
+                try {
+                    maNT = nhapSoNguyen("  ➔ Nhap ma khach thue da co (Nhap 0 de huy): ", 0);
+                    if (maNT == 0) return false;
+                    nt = qlNguoiThue.timKiemNguoiThue(maNT);
+                    if (nt == nullptr) {
+                        throw LoiThucThi("Khong tim thay khach hang voi ma: " + to_string(maNT));
+                    }
+                } catch (const NgoaiLe& e) {
+                    inThongBaoLoi(string("Loi: ") + e.what() + " Vui long nhap lai!");
+                }
+            }
+        }
+    }
+
+    if (chonNT == 2) {
+        cout << "\n  --- NHAP THONG TIN KHACH THUE MOI ---\n";
+        maNT = nhapMaNguoiThueMoi(qlNguoiThue);
+        string hoTen = nhapChuoi("  ➔ Nhap ho va ten: ");
+        Date ns = nhapNgayThangNam("ngay sinh khach thue");
+        string sdt = nhapSoDienThoai("  ➔ Nhap so dien thoai (10 chu so): ");
+
+        nt = new NguoiThue(maNT, hoTen, ns, sdt);
+        qlNguoiThue.themNguoiThue(nt);
+        cout << "  [+] Da them khach thue moi: " << hoTen << " (Ma: " << maNT << ")\n";
+    }
+
+    if (nt == nullptr) return false;
+
+    // 2. Lap hop dong thue
+    cout << "\n  [2. Thong tin hop dong thue phong]:\n";
+    int maHD = 0;
+    while (true) {
+        try {
+            maHD = nhapSoNguyen("  ➔ Nhap ma hop dong moi (Nhap 0 de huy): ", 0);
+            if (maHD == 0) return false;
+            if (qlHopDong.timKiemHopDong(maHD).getMaHopDong() != 0) {
+                throw LoiThucThi("Ma hop dong " + to_string(maHD) + " da ton tai trong he thong!");
+            }
+            break;
+        } catch (const NgoaiLe& e) {
+            inThongBaoLoi(string("Loi: ") + e.what() + " Vui long nhap lai!");
+        }
+    }
+
+    Date ngayLapHD;
+    int thoiHan = 0;
+    while (true) {
+        try {
+            ngayLapHD = nhapNgayThangNam("ngay bat dau hop dong");
+            if (ngayLapHD <= nt->getNgaySinh()) {
+                throw LoiDoiSo("Ngay bat dau hop dong (" + ngayLapHD.toString() + 
+                               ") khong the xay ra truoc hoac cung ngay sinh cua khach thue (" + 
+                               nt->getNgaySinh().toString() + ")!");
+            }
+            thoiHan = nhapSoNguyen("  ➔ Nhap thoi han thue (1 - 120 thang): ", 1, 120);
+
+            const HopDongThue* biTrung = qlHopDong.timHopDongBiTrung(maPhong, ngayLapHD, thoiHan);
+            if (biTrung != nullptr) {
+                Date ktMoi = ngayLapHD.congThang(thoiHan);
+                NguoiThue* ntTrung = qlNguoiThue.timKiemNguoiThue(biTrung->getMaNguoiThue());
+                string tenTrung = (ntTrung != nullptr) ? ntTrung->getHoTen() : ("Ma NT " + to_string(biTrung->getMaNguoiThue()));
+                throw LoiThucThi("Khoang thoi gian thue tu " + ngayLapHD.toString() + " den " + ktMoi.toString() + 
+                                 " bi TRUNG LAP voi hop dong " + to_string(biTrung->getMaHopDong()) + " cua " + tenTrung + 
+                                 " (Tu " + biTrung->getNgayLap().toString() + " den " + biTrung->getNgayKetThuc().toString() + ")!");
+            }
+            break;
+        } catch (const NgoaiLe& e) {
+            inThongBaoLoi(string("Loi: ") + e.what() + " Vui long nhap lai!");
+        }
+    }
+
+    double giaThueHD = pt->tinhGiaThue();
+    cout << "  ➔ Gia thue theo phong: " << dinhDangTien((long long)giaThueHD) << " VND/thang\n";
+    int doiGia = nhapSoNguyen("  ➔ Ban co muon tuy chinh gia thue tren hop dong? (1: Co, 0: Mac dinh): ", 0, 1);
+    if (doiGia == 1) {
+        giaThueHD = nhapSoThuc("  ➔ Nhap gia thue hop dong moi (> 0 VND): ");
+    }
+
+    // Luu hop dong va dong bo trang thai phong
+    qlHopDong.themHopDong(HopDongThue(maHD, maPhong, maNT, ngayLapHD, thoiHan, giaThueHD));
+    pt->setTinhTrang("Da thue");
+
+    datMau(MAU_XANH_LA_SANG, 0);
+    cout << "\n  ✔ [HOAN TAT DONG BO] Da lien ket Phong " << pt->getTenPhong() << " (Ma " << maPhong << ")"
+         << " <-> Khach thue: " << nt->getHoTen() << " (Ma " << maNT << ") qua Hop dong " << maHD << "!\n";
+    khoiPhucMau();
+    return true;
+}
+
 void thuePhongTro(QuanLyPhong& qlPhong, QuanLyNguoiThue& qlNguoiThue, QuanLyHopDong& qlHopDong, QuanLyHoaDon& qlHoaDon) {
     xoaManHinh();
     cout << "\n";
@@ -221,133 +353,17 @@ void thuePhongTro(QuanLyPhong& qlPhong, QuanLyNguoiThue& qlNguoiThue, QuanLyHopD
              << " VND | Tong gia: " << dinhDangTien((long long)pt->tinhGiaThue()) << " VND\n";
         khoiPhucMau();
 
-        // 2. Chon hoac tao nguoi thue
-        cout << "\n  [Thong tin nguoi thue]:\n";
-        cout << "    [1] Chon nguoi thue da co trong danh sach\n";
-        cout << "    [2] Them nguoi thue moi hoan toan vao he thong\n";
-        cout << "    [0] Bo qua luot thue phong nay\n";
-        int chonNT = nhapSoNguyen("➔ Nhap lua chon [0-2]: ", 0, 2);
-
-        if (chonNT == 0) {
-            inHopThongBaoThongTin("Da bo qua luot thue phong nay.");
-            if (k + 1 < soLuong) {
-                int tiep = nhapSoNguyen("    Ban co muon tiep tuc luot thue tiep theo? (1: Co, 0: Dung): ", 0, 1);
-                if (tiep == 0) break;
-            }
-            continue;
-        }
-
-        int maNT = 0;
-        NguoiThue* nt = nullptr;
-
-        if (chonNT == 1) {
-            while (nt == nullptr) {
-                try {
-                    maNT = nhapSoNguyen("➔ Nhap ma nguoi thue da co (Nhap 0 de bo qua): ", 0);
-                    if (maNT == 0) {
-                        boQua = true;
-                        break;
-                    }
-                    nt = qlNguoiThue.timKiemNguoiThue(maNT);
-                    if (nt == nullptr) {
-                        throw LoiThucThi("Khong tim thay nguoi thue voi ma: " + to_string(maNT));
-                    }
-                } catch (const NgoaiLe& e) {
-                    inThongBaoLoi(string("Loi: ") + e.what() + " Vui long nhap lai!");
-                }
-            }
+        bool ok = lienKetHopDongChoPhong(pt, qlNguoiThue, qlHopDong);
+        if (ok) {
+            daThue++;
         } else {
-            cout << "\n  --- NHAP THONG TIN NGUOI THUE MOI ---\n";
-            maNT = nhapMaNguoiThueMoi(qlNguoiThue);
-            string hoTen = nhapChuoi("➔ Nhap ho va ten: ");
-            Date ns = nhapNgayThangNam("ngay sinh nguoi thue");
-            string sdt = nhapSoDienThoai("➔ Nhap so dien thoai (10 chu so): ");
-
-            nt = new NguoiThue(maNT, hoTen, ns, sdt);
-            qlNguoiThue.themNguoiThue(nt);
-            cout << "  [+] Da them nguoi thue: " << hoTen << " (Ma: " << maNT << ")\n";
-        }
-
-        if (boQua || nt == nullptr) {
             inHopThongBaoThongTin("Da bo qua luot thue phong nay.");
-            if (k + 1 < soLuong) {
-                int tiep = nhapSoNguyen("    Ban co muon tiep tuc luot thue tiep theo? (1: Co, 0: Dung): ", 0, 1);
-                if (tiep == 0) break;
-            }
-            continue;
         }
 
-        // 3. Lap hop dong thue
-        cout << "\n  --- THONG TIN HOP DONG THUE PHONG ---\n";
-        int maHD = 0;
-        while (true) {
-            try {
-                maHD = nhapSoNguyen("➔ Nhap ma hop dong moi (Nhap 0 de bo qua): ", 0);
-                if (maHD == 0) {
-                    boQua = true;
-                    break;
-                }
-                if (qlHopDong.timKiemHopDong(maHD).getMaHopDong() != 0) {
-                    throw LoiThucThi("Ma hop dong " + to_string(maHD) + " da ton tai trong he thong!");
-                }
-                break;
-            } catch (const NgoaiLe& e) {
-                inThongBaoLoi(string("Loi: ") + e.what() + " Vui long nhap lai!");
-            }
+        if (k + 1 < soLuong) {
+            int tiep = nhapSoNguyen("    Ban co muon tiep tuc luot thue tiep theo? (1: Co, 0: Dung): ", 0, 1);
+            if (tiep == 0) break;
         }
-
-        if (boQua) {
-            inHopThongBaoThongTin("Da bo qua luot thue phong nay.");
-            if (k + 1 < soLuong) {
-                int tiep = nhapSoNguyen("    Ban co muon tiep tuc luot thue tiep theo? (1: Co, 0: Dung): ", 0, 1);
-                if (tiep == 0) break;
-            }
-            continue;
-        }
-
-        Date ngayLapHD;
-        int thoiHan = 0;
-        while (true) {
-            try {
-                ngayLapHD = nhapNgayThangNam("ngay bat dau hop dong");
-                if (ngayLapHD <= nt->getNgaySinh()) {
-                    throw LoiDoiSo("Ngay bat dau hop dong (" + ngayLapHD.toString() + 
-                                   ") khong the xay ra truoc hoac cung ngay sinh cua nguoi thue (" + 
-                                   nt->getNgaySinh().toString() + ")!");
-                }
-                thoiHan = nhapSoNguyen("➔ Nhap thoi han thue (1 - 120 thang): ", 1, 120);
-
-                const HopDongThue* biTrung = qlHopDong.timHopDongBiTrung(maPhong, ngayLapHD, thoiHan);
-                if (biTrung != nullptr) {
-                    Date ktMoi = ngayLapHD.congThang(thoiHan);
-                    NguoiThue* ntTrung = qlNguoiThue.timKiemNguoiThue(biTrung->getMaNguoiThue());
-                    string tenTrung = (ntTrung != nullptr) ? ntTrung->getHoTen() : ("Ma NT " + to_string(biTrung->getMaNguoiThue()));
-                    throw LoiThucThi("Khoang thoi gian thue tu " + ngayLapHD.toString() + " den " + ktMoi.toString() + 
-                                     " bi TRUNG LAP voi hop dong " + to_string(biTrung->getMaHopDong()) + " cua " + tenTrung + 
-                                     " (Tu " + biTrung->getNgayLap().toString() + " den " + biTrung->getNgayKetThuc().toString() + ")!");
-                }
-                break;
-            } catch (const NgoaiLe& e) {
-                inThongBaoLoi(string("Loi: ") + e.what() + " Vui long nhap lai!");
-            }
-        }
-
-        double giaThueHD = pt->tinhGiaThue();
-        cout << "  ➔ Gia thue tong cong theo phong: " << dinhDangTien((long long)giaThueHD) << " VND/thang\n";
-        int doiGia = nhapSoNguyen("    Ban co muon tuy chinh gia thue tren hop dong khong? (1: Co, 0: Mac dinh): ", 0, 1);
-        if (doiGia == 1) {
-            giaThueHD = nhapSoThuc("➔ Nhap gia thue hop dong moi (> 0 VND): ");
-        }
-
-        // Tao hop dong va cap nhat trang thai phong
-        qlHopDong.themHopDong(HopDongThue(maHD, maPhong, maNT, ngayLapHD, thoiHan, giaThueHD));
-        pt->setTinhTrang("Da thue");
-        daThue++;
-
-        datMau(MAU_XANH_LA_SANG, 0);
-        cout << "\n  ✔ [HOAN TAT] Da lien ket: Phong " << pt->getTenPhong() << " (Ma " << maPhong << ")"
-             << " <-> Nguoi thue: " << nt->getHoTen() << " (Ma " << maNT << ") qua Hop dong " << maHD << "!\n";
-        khoiPhucMau();
     }
 
     if (daThue > 0) {
@@ -422,6 +438,132 @@ void traPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThue
 void traPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThue& qlNguoiThue) {
     QuanLyHoaDon dummyHD;
     traPhongTro(qlPhong, qlHopDong, qlNguoiThue, dummyHD);
+}
+
+// Xu ly dong bo sau khi them phong neu co phong da thue chua lap hop dong
+void xuLyDongBoSauKhiThemPhong(LinkedList<PhongTro*>& dsChuaHD, QuanLyPhong& qlPhong, QuanLyNguoiThue& qlNguoiThue, QuanLyHopDong& qlHopDong, QuanLyHoaDon& qlHoaDon) {
+    if (dsChuaHD.empty()) return;
+
+    datMau(MAU_DO_SANG, 0);
+    cout << "\n  ╔═══════════════════════════════════════════════════════════════════════════╗\n";
+    cout << "  ║ ";
+    datMau(MAU_VANG_SANG, 0);
+    cout << "   ⚠️  CẢNH BÁO: CÓ " << dsChuaHD.size() << " PHÒNG 'ĐÃ THUÊ' NHƯNG CHƯA CÓ HỢP ĐỒNG ĐỒNG BỘ!     ";
+    datMau(MAU_DO_SANG, 0);
+    cout << "║\n";
+    cout << "  ╚═══════════════════════════════════════════════════════════════════════════╝\n";
+    khoiPhucMau();
+    cout << "  Cac phong vua them dang can cap nhat hop dong:\n";
+    for (PhongTro* pt : dsChuaHD) {
+        cout << "    - Phong [Ma: " << pt->getMaPhong() << ", Ten: " << pt->getTenPhong() << "]\n";
+    }
+    cout << "\n  ➔ Ban co muon lap hop dong bo sung ngay bay gio khong?\n";
+    cout << "    [1] Co, tien hanh lap hop dong & nguoi thue ngay\n";
+    cout << "    [2] Chuyen tat ca cac phong nay ve trang thai 'Con trong'\n";
+    cout << "    [0] De sau (Co the dung muc [13] trong Menu Phong tro bat cu luc nao)\n";
+    int chonBD = nhapSoNguyen("  ➔ Nhap lua chon [0-2] (Khuyen nghi: 1): ", 0, 2);
+
+    if (chonBD == 1) {
+        int capNhat = 0;
+        for (PhongTro* pt : dsChuaHD) {
+            if (qlHopDong.timMaNguoiThueTheoPhong(pt->getMaPhong()) == 0) {
+                if (lienKetHopDongChoPhong(pt, qlNguoiThue, qlHopDong)) {
+                    capNhat++;
+                }
+            }
+        }
+        if (capNhat > 0) {
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da cap nhat hop dong thanh cong cho " + to_string(capNhat) + " phong va luu file!");
+        }
+    } else if (chonBD == 2) {
+        for (PhongTro* pt : dsChuaHD) {
+            pt->setTinhTrang("Con trong");
+        }
+        luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+        inThongBaoThanhCong("Da chuyen tat ca phong nay ve trang thai 'Con trong' va luu file!");
+    } else {
+        inHopThongBaoThongTin("Ban da chon de sau. Hay dung muc [13] trong menu Phong tro de dong bo khi can.");
+    }
+}
+
+// Chuc nang kiem tra va dong bo cac phong o trang thai Da thue nhung chua co hop dong
+void kiemTraVaDongBoPhongChuaCoHopDong(QuanLyPhong& qlPhong, QuanLyNguoiThue& qlNguoiThue, QuanLyHopDong& qlHopDong, QuanLyHoaDon& qlHoaDon) {
+    xoaManHinh();
+    cout << "\n";
+    datMau(MAU_VANG_SANG, 0);
+    cout << "  ╔═══════════════════════════════════════════════════════════════════════════╗\n";
+    cout << "  ║ ";
+    datMau(MAU_TRANG_SANG, 0);
+    cout << "      KIỂM TRA & ĐỒNG BỘ PHÒNG ĐÃ THUÊ CHƯA CÓ HỢP ĐỒNG / KHÁCH THUÊ       ";
+    datMau(MAU_VANG_SANG, 0);
+    cout << "║\n";
+    cout << "  ╚═══════════════════════════════════════════════════════════════════════════╝\n\n";
+    khoiPhucMau();
+
+    LinkedList<PhongTro*> dsChuaHD = layDanhSachPhongChuaCoHopDong(qlPhong, qlHopDong);
+
+    if (dsChuaHD.empty()) {
+        inThongBaoThanhCong("Tuyet voi! Tat ca cac phong o trang thai 'Da thue' deu da co hop dong hop le.");
+        dungManHinh();
+        return;
+    }
+
+    datMau(MAU_DO_SANG, 0);
+    cout << "  [!] Phat hien " << dsChuaHD.size() << " phong dang o trang thai 'Da thue' nhung CHUA CO HOP DONG:\n";
+    khoiPhucMau();
+
+    hienThiBangPhongTro(dsChuaHD, qlHopDong, qlNguoiThue);
+
+    cout << "\n  ➔ Ban muon xu ly nhu the nao?\n";
+    cout << "    [1] Tien hanh lap hop dong & nguoi thue cho tung phong tren\n";
+    cout << "    [2] Chuyen tat ca cac phong tren ve trang thai 'Con trong'\n";
+    cout << "    [0] Quay lai (De xu ly sau)\n";
+    int lc = nhapSoNguyen("  ➔ Nhap lua chon [0-2]: ", 0, 2);
+
+    if (lc == 1) {
+        int daDongBo = 0;
+        for (PhongTro* pt : dsChuaHD) {
+            cout << "\n";
+            datMau(MAU_XANH_NGOC_SANG, 0);
+            cout << "  >>> DONG BO CHO PHONG: " << pt->getTenPhong() << " (Ma: " << pt->getMaPhong() << ") <<<\n";
+            khoiPhucMau();
+            int tiep = nhapSoNguyen("  ➔ Ban co muon lap hop dong cho phong nay khong? (1: Co, 0: Bo qua): ", 0, 1);
+            if (tiep == 1) {
+                if (lienKetHopDongChoPhong(pt, qlNguoiThue, qlHopDong)) {
+                    daDongBo++;
+                }
+            } else {
+                int chuyenTrong = nhapSoNguyen("  ➔ Ban co muon chuyen phong nay ve 'Con trong' khong? (1: Co, 0: Giu nguyen): ", 0, 1);
+                if (chuyenTrong == 1) {
+                    pt->setTinhTrang("Con trong");
+                    cout << "  [i] Da chuyen phong " << pt->getMaPhong() << " ve trang thai 'Con trong'.\n";
+                    daDongBo++;
+                }
+            }
+        }
+        if (daDongBo > 0) {
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da cap nhat va luu thanh cong " + to_string(daDongBo) + " phong vao he thong!");
+        } else {
+            inHopThongBaoThongTin("Khong co thay doi nao duoc thuc hien.");
+        }
+    } else if (lc == 2) {
+        int xacNhan = nhapSoNguyen("  ⚠️ Ban co chac chan muon chuyen TAT CA phong tren ve 'Con trong'? (1: Co, 0: Khong): ", 0, 1);
+        if (xacNhan == 1) {
+            for (PhongTro* pt : dsChuaHD) {
+                pt->setTinhTrang("Con trong");
+            }
+            luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+            inThongBaoThanhCong("Da chuyen toan bo " + to_string(dsChuaHD.size()) + " phong ve trang thai 'Con trong' va luu file!");
+        } else {
+            inHopThongBaoThongTin("Da huy thao tac.");
+        }
+    } else {
+        inHopThongBaoThongTin("Da thoat che do dong bo. Du lieu van duoc giu nguyen.");
+    }
+
+    dungManHinh();
 }
 
 // ================================================================
@@ -633,7 +775,8 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
         {10, "[10]  Tim kiem phong tro co DIEN TICH LON HON x (m2)", ""},
         {11, "[11]  Xem so theo doi thanh toan tung thang cua mot phong", ""},
         {12, "[12]  Sap xep danh sach phong tro (Dien tich, Gia thue)", ""},
-        {13, "[13]  Xoa man hinh console (Clear)", ""},
+        {13, "[13]  Kiem tra & Dong bo phong da thue chua co hop dong", ""},
+        {14, "[14]  Xoa man hinh console (Clear)", ""},
         {0,  "[0]   Quay lai menu chinh", ""}
     };
     int soMuc = sizeof(ds) / sizeof(ds[0]);
@@ -651,6 +794,7 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
                 inThongBaoLoi("Da huy thao tac them phong.");
             } else {
                 int daThem = 0;
+                LinkedList<PhongTro*> dsChuaHD;
                 for (int i = 0; i < soLuong; ++i) {
                     if (soLuong > 1) {
                         cout << "\n  --- [Nhap phong tro thuong thu " << (i + 1) << "/" << soLuong << "] ---\n";
@@ -663,12 +807,44 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
                     double gia = nhapSoThuc("➔ Nhap gia thue goc (> 0 VND): ");
                     int gacInt = nhapSoNguyen("➔ Co gac lung khong (1: Co, 0: Khong): ", 0, 1);
 
-                    qlPhong.themPhongTro(new PhongTroThuong(ma, ten, tinhTrang, dienTich, gia, gacInt == 1));
+                    PhongTroThuong* ptMoi = new PhongTroThuong(ma, ten, tinhTrang, dienTich, gia, gacInt == 1);
+                    qlPhong.themPhongTro(ptMoi);
                     daThem++;
                     cout << "  [+] Da them phong: " << ten << " (Ma: " << ma << ")\n";
+
+                    if (tt == 1) {
+                        datMau(MAU_VANG_SANG, 0);
+                        cout << "\n  ┌────────────────────────────────────────────────────────────────────────┐\n";
+                        cout << "  │ ⚠️  PHÒNG ĐƯỢC ĐÁNH DẤU LÀ 'ĐÃ THUÊ' CẦN CÓ HỢP ĐỒNG & KHÁCH THUÊ!      │\n";
+                        cout << "  │ Bạn muốn cập nhật thông tin hợp đồng và khách thuê như thế nào?        │\n";
+                        cout << "  │   [1] Lập hợp đồng & gán khách thuê NGAY BÂY GIỜ                       │\n";
+                        cout << "  │   [2] Đổi tình trạng thành 'Còn trống' (Để lập hợp đồng sau)           │\n";
+                        cout << "  │   [0] Tạm lưu 'Đã thuê' và lập hợp đồng bổ sung sau                    │\n";
+                        cout << "  └────────────────────────────────────────────────────────────────────────┘\n";
+                        khoiPhucMau();
+                        int xuLy = nhapSoNguyen("  ➔ Nhap lua chon [0-2] (Khuyen nghi: 1): ", 0, 2);
+                        if (xuLy == 1) {
+                            if (!lienKetHopDongChoPhong(ptMoi, qlNguoiThue, qlHopDong)) {
+                                int giu = nhapSoNguyen("  [!] Ban chua hoan tat hop dong. [1] Giu 'Da thue' de lap sau, [0] Chuyen ve 'Con trong': ", 0, 1);
+                                if (giu == 0) {
+                                    ptMoi->setTinhTrang("Con trong");
+                                    cout << "  [i] Da dat tinh trang phong " << ma << " thanh 'Con trong'.\n";
+                                } else {
+                                    dsChuaHD.push_back(ptMoi);
+                                }
+                            }
+                        } else if (xuLy == 2) {
+                            ptMoi->setTinhTrang("Con trong");
+                            cout << "  [i] Da dat tinh trang phong " << ma << " thanh 'Con trong'.\n";
+                        } else {
+                            dsChuaHD.push_back(ptMoi);
+                        }
+                    }
                 }
                 luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
                 inThongBaoThanhCong("Da them thanh cong " + to_string(daThem) + " phong tro thuong (Da luu vao file)!");
+
+                xuLyDongBoSauKhiThemPhong(dsChuaHD, qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
             }
             dungManHinh();
         } else if (luaChon == 2) {
@@ -679,6 +855,7 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
                 inThongBaoLoi("Da huy thao tac them phong VIP.");
             } else {
                 int daThem = 0;
+                LinkedList<PhongTro*> dsChuaHD;
                 for (int i = 0; i < soLuong; ++i) {
                     if (soLuong > 1) {
                         cout << "\n  --- [Nhap phong tro VIP thu " << (i + 1) << "/" << soLuong << "] ---\n";
@@ -691,12 +868,44 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
                     double gia = nhapSoThuc("➔ Nhap gia thue goc (> 0 VND): ");
                     double phiDV = nhapSoThuc("➔ Nhap phi dich vu dac biet (>= 0 VND): ", -0.01);
 
-                    qlPhong.themPhongTro(new PhongTroVip(ma, ten, tinhTrang, dienTich, gia, phiDV));
+                    PhongTroVip* ptMoi = new PhongTroVip(ma, ten, tinhTrang, dienTich, gia, phiDV);
+                    qlPhong.themPhongTro(ptMoi);
                     daThem++;
                     cout << "  [+] Da them phong VIP: " << ten << " (Ma: " << ma << ")\n";
+
+                    if (tt == 1) {
+                        datMau(MAU_VANG_SANG, 0);
+                        cout << "\n  ┌────────────────────────────────────────────────────────────────────────┐\n";
+                        cout << "  │ ⚠️  PHÒNG ĐƯỢC ĐÁNH DẤU LÀ 'ĐÃ THUÊ' CẦN CÓ HỢP ĐỒNG & KHÁCH THUÊ!      │\n";
+                        cout << "  │ Bạn muốn cập nhật thông tin hợp đồng và khách thuê như thế nào?        │\n";
+                        cout << "  │   [1] Lập hợp đồng & gán khách thuê NGAY BÂY GIỜ                       │\n";
+                        cout << "  │   [2] Đổi tình trạng thành 'Còn trống' (Để lập hợp đồng sau)           │\n";
+                        cout << "  │   [0] Tạm lưu 'Đã thuê' và lập hợp đồng bổ sung sau                    │\n";
+                        cout << "  └────────────────────────────────────────────────────────────────────────┘\n";
+                        khoiPhucMau();
+                        int xuLy = nhapSoNguyen("  ➔ Nhap lua chon [0-2] (Khuyen nghi: 1): ", 0, 2);
+                        if (xuLy == 1) {
+                            if (!lienKetHopDongChoPhong(ptMoi, qlNguoiThue, qlHopDong)) {
+                                int giu = nhapSoNguyen("  [!] Ban chua hoan tat hop dong. [1] Giu 'Da thue' de lap sau, [0] Chuyen ve 'Con trong': ", 0, 1);
+                                if (giu == 0) {
+                                    ptMoi->setTinhTrang("Con trong");
+                                    cout << "  [i] Da dat tinh trang phong " << ma << " thanh 'Con trong'.\n";
+                                } else {
+                                    dsChuaHD.push_back(ptMoi);
+                                }
+                            }
+                        } else if (xuLy == 2) {
+                            ptMoi->setTinhTrang("Con trong");
+                            cout << "  [i] Da dat tinh trang phong " << ma << " thanh 'Con trong'.\n";
+                        } else {
+                            dsChuaHD.push_back(ptMoi);
+                        }
+                    }
                 }
                 luuTatCaDuLieu(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
                 inThongBaoThanhCong("Da them thanh cong " + to_string(daThem) + " phong tro VIP (Da luu vao file)!");
+
+                xuLyDongBoSauKhiThemPhong(dsChuaHD, qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
             }
             dungManHinh();
         } else if (luaChon == 3) {
@@ -736,6 +945,13 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
             cout << "\n  ═══ DANH SÁCH TẤT CẢ PHÒNG TRỌ (KÈM THÔNG TIN NGƯỜI THUÊ) ═══";
             khoiPhucMau();
             hienThiBangPhongTro(qlPhong.layDanhSachPhong(), qlHopDong, qlNguoiThue);
+            LinkedList<PhongTro*> dsChuaHD = layDanhSachPhongChuaCoHopDong(qlPhong, qlHopDong);
+            if (!dsChuaHD.empty()) {
+                datMau(MAU_DO_SANG, 0);
+                cout << "\n  ⚠️  CẢNH BÁO: Co " << dsChuaHD.size() << " phong dang o trang thai 'Da thue' nhung CHUA CO HOP DONG hop le!\n";
+                cout << "      (Vui long chon muc [13] trong Menu Phong tro de lap hop dong hoac chuyen ve 'Con trong')\n";
+                khoiPhucMau();
+            }
             dungManHinh();
         } else if (luaChon == 6) {
             xoaManHinh();
@@ -752,6 +968,13 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
             cout << "\n  ═══ DANH SÁCH CÁC PHÒNG TRỌ ĐANG ĐƯỢC THUÊ ═══";
             khoiPhucMau();
             hienThiBangPhongTro(dsDaThue, qlHopDong, qlNguoiThue);
+            LinkedList<PhongTro*> dsChuaHD = layDanhSachPhongChuaCoHopDong(qlPhong, qlHopDong);
+            if (!dsChuaHD.empty()) {
+                datMau(MAU_DO_SANG, 0);
+                cout << "\n  ⚠️  CẢNH BÁO: Co " << dsChuaHD.size() << " phong tren dang o trang thai 'Da thue' nhung CHUA CO HOP DONG!\n";
+                cout << "      (Vui long chon muc [13] trong Menu Phong tro de lap hop dong hoac chuyen ve 'Con trong')\n";
+                khoiPhucMau();
+            }
             dungManHinh();
         } else if (luaChon == 8) {
             xoaManHinh();
@@ -813,6 +1036,8 @@ void menuPhongTro(QuanLyPhong& qlPhong, QuanLyHopDong& qlHopDong, QuanLyNguoiThu
         } else if (luaChon == 12) {
             menuSapXepPhong(qlPhong, qlHopDong, qlNguoiThue, qlHoaDon);
         } else if (luaChon == 13) {
+            kiemTraVaDongBoPhongChuaCoHopDong(qlPhong, qlNguoiThue, qlHopDong, qlHoaDon);
+        } else if (luaChon == 14) {
             xoaManHinh();
         }
     }
